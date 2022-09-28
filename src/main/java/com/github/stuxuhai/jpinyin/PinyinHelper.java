@@ -1,6 +1,7 @@
 package com.github.stuxuhai.jpinyin;
 
 import java.io.FileNotFoundException;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashSet;
@@ -35,9 +36,8 @@ public final class PinyinHelper {
 
     /**
      * 将带声调格式的拼音转换为数字代表声调格式的拼音
-     * 
-     * @param pinyinArrayString
-     *            带声调格式的拼音
+     *
+     * @param pinyinArrayString 带声调格式的拼音
      * @return 数字代表声调格式的拼音
      */
     private static String[] convertWithToneNumber(String pinyinArrayString) {
@@ -70,9 +70,8 @@ public final class PinyinHelper {
 
     /**
      * 将带声调格式的拼音转换为不带声调格式的拼音
-     * 
-     * @param pinyinArrayString
-     *            带声调格式的拼音
+     *
+     * @param pinyinArrayString 带声调格式的拼音
      * @return 不带声调的拼音
      */
     private static String[] convertWithoutTone(String pinyinArrayString) {
@@ -96,11 +95,9 @@ public final class PinyinHelper {
 
     /**
      * 将带声调的拼音格式化为相应格式的拼音
-     * 
-     * @param pinyinString
-     *            带声调的拼音
-     * @param pinyinFormat
-     *            拼音格式：WITH_TONE_NUMBER--数字代表声调，WITHOUT_TONE--不带声调，WITH_TONE_MARK--带声调
+     *
+     * @param pinyinString 带声调的拼音
+     * @param pinyinFormat 拼音格式：WITH_TONE_NUMBER--数字代表声调，WITHOUT_TONE--不带声调，WITH_TONE_MARK--带声调
      * @return 格式转换后的拼音
      */
     private static String[] formatPinyin(String pinyinString, PinyinFormat pinyinFormat) {
@@ -116,11 +113,9 @@ public final class PinyinHelper {
 
     /**
      * 将单个汉字转换为相应格式的拼音
-     * 
-     * @param c
-     *            需要转换成拼音的汉字
-     * @param pinyinFormat
-     *            拼音格式：WITH_TONE_NUMBER--数字代表声调，WITHOUT_TONE--不带声调，WITH_TONE_MARK--带声调
+     *
+     * @param c            需要转换成拼音的汉字
+     * @param pinyinFormat 拼音格式：WITH_TONE_NUMBER--数字代表声调，WITHOUT_TONE--不带声调，WITH_TONE_MARK--带声调
      * @return 汉字的拼音
      */
     public static String[] convertToPinyinArray(char c, PinyinFormat pinyinFormat) {
@@ -133,9 +128,8 @@ public final class PinyinHelper {
 
     /**
      * 将单个汉字转换成带声调格式的拼音
-     * 
-     * @param c
-     *            需要转换成拼音的汉字
+     *
+     * @param c 需要转换成拼音的汉字
      * @return 字符串的拼音
      */
     public static String[] convertToPinyinArray(char c) {
@@ -144,13 +138,10 @@ public final class PinyinHelper {
 
     /**
      * 将字符串转换成相应格式的拼音
-     * 
-     * @param str
-     *            需要转换的字符串
-     * @param separator
-     *            拼音分隔符
-     * @param pinyinFormat
-     *            拼音格式：WITH_TONE_NUMBER--数字代表声调，WITHOUT_TONE--不带声调，WITH_TONE_MARK--带声调
+     *
+     * @param str          需要转换的字符串
+     * @param separator    拼音分隔符
+     * @param pinyinFormat 拼音格式：WITH_TONE_NUMBER--数字代表声调，WITHOUT_TONE--不带声调，WITH_TONE_MARK--带声调
      * @return 字符串的拼音
      * @throws PinyinException
      */
@@ -201,11 +192,9 @@ public final class PinyinHelper {
 
     /**
      * 将字符串转换成带声调格式的拼音
-     * 
-     * @param str
-     *            需要转换的字符串
-     * @param separator
-     *            拼音分隔符
+     *
+     * @param str       需要转换的字符串
+     * @param separator 拼音分隔符
      * @return 转换后带声调的拼音
      * @throws PinyinException
      */
@@ -215,9 +204,8 @@ public final class PinyinHelper {
 
     /**
      * 判断一个汉字是否为多音字
-     * 
-     * @param c
-     *            汉字
+     *
+     * @param c 汉字
      * @return 判断结果，是汉字返回true，否则返回false
      */
     public static boolean hasMultiPinyin(char c) {
@@ -230,9 +218,8 @@ public final class PinyinHelper {
 
     /**
      * 获取字符串对应拼音的首字母
-     * 
-     * @param str
-     *            需要转换的字符串
+     *
+     * @param str 需要转换的字符串
      * @return 对应拼音的首字母
      * @throws PinyinException
      */
@@ -273,8 +260,23 @@ public final class PinyinHelper {
         PINYIN_TABLE.putAll(PinyinResource.getResource(PinyinResource.newFileReader(path)));
     }
 
+    public static void addPinyinDict(Reader reader) {
+        PINYIN_TABLE.putAll(PinyinResource.getResource(reader));
+    }
+
     public static void addMutilPinyinDict(String path) throws FileNotFoundException {
         MUTIL_PINYIN_TABLE.putAll(PinyinResource.getResource(PinyinResource.newFileReader(path)));
+        dict.clear();
+        DOUBLE_ARRAY_TRIE.clear();
+        for (String word : MUTIL_PINYIN_TABLE.keySet()) {
+            dict.add(word);
+        }
+        Collections.sort(dict);
+        DOUBLE_ARRAY_TRIE.build(dict);
+    }
+
+    public static void addMutilPinyinDict(Reader reader) {
+        MUTIL_PINYIN_TABLE.putAll(PinyinResource.getResource(reader));
         dict.clear();
         DOUBLE_ARRAY_TRIE.clear();
         for (String word : MUTIL_PINYIN_TABLE.keySet()) {
