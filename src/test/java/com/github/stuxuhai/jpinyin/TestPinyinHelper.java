@@ -3,6 +3,9 @@ package com.github.stuxuhai.jpinyin;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.io.FileNotFoundException;
+import java.io.Reader;
+
 public class TestPinyinHelper {
 
     @Test
@@ -38,5 +41,19 @@ public class TestPinyinHelper {
     @Test
     public void testGetShortPinyin() throws PinyinException {
         Assert.assertEquals(PinyinHelper.getShortPinyin("你好世界"), "nhsj");
+    }
+
+    @Test
+    public void testAddPinyinDict() {
+        Reader reader = PinyinResource.newClassPathReader("/data/mutil_pinyin.dict");
+        PinyinHelper.addPinyinDict(reader);
+        Assert.assertTrue(PinyinHelper.hasMultiPinyin('为'));
+    }
+
+    @Test
+    public void testAddMutilPinyinDict(){
+        Reader reader = PinyinResource.newClassPathReader("/data/mutil_pinyin.dict");
+        PinyinHelper.addMutilPinyinDict(reader);
+        Assert.assertTrue(PinyinHelper.hasMultiPinyin('为'));
     }
 }
