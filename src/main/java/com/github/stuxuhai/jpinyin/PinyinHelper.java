@@ -15,7 +15,7 @@ import java.util.Map;
 public final class PinyinHelper {
     private static List<String> dict = new ArrayList<String>();
     private static final Map<String, String> PINYIN_TABLE = PinyinResource.getPinyinResource();
-    private static final Map<String, String> MUTIL_PINYIN_TABLE = PinyinResource.getMutilPinyinResource();
+    private static final Map<String, String> MULTI_PINYIN_TABLE = PinyinResource.getMultiPinyinResource();
     private static final DoubleArrayTrie DOUBLE_ARRAY_TRIE = new DoubleArrayTrie();
     private static final String PINYIN_SEPARATOR = ","; // 拼音分隔符
     private static final char CHINESE_LING = '〇';
@@ -23,7 +23,7 @@ public final class PinyinHelper {
     private static final String ALL_MARKED_VOWEL = "āáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜ"; // 所有带声调的拼音字母
 
     static {
-        for (String word : MUTIL_PINYIN_TABLE.keySet()) {
+        for (String word : MULTI_PINYIN_TABLE.keySet()) {
             dict.add(word);
         }
         Collections.sort(dict);
@@ -182,7 +182,7 @@ public final class PinyinHelper {
                 i++;
             } else {
                 String words = dict.get(commonPrefixList.get(commonPrefixList.size() - 1));
-                String[] pinyinArray = formatPinyin(MUTIL_PINYIN_TABLE.get(words), pinyinFormat);
+                String[] pinyinArray = formatPinyin(MULTI_PINYIN_TABLE.get(words), pinyinFormat);
                 for (int j = 0, l = pinyinArray.length; j < l; j++) {
                     sb.append(pinyinArray[j]);
                     if (j < l - 1) {
@@ -273,11 +273,11 @@ public final class PinyinHelper {
         PINYIN_TABLE.putAll(PinyinResource.getResource(PinyinResource.newFileReader(path)));
     }
 
-    public static void addMutilPinyinDict(String path) throws FileNotFoundException {
-        MUTIL_PINYIN_TABLE.putAll(PinyinResource.getResource(PinyinResource.newFileReader(path)));
+    public static void addMultiPinyinDict(String path) throws FileNotFoundException {
+        MULTI_PINYIN_TABLE.putAll(PinyinResource.getResource(PinyinResource.newFileReader(path)));
         dict.clear();
         DOUBLE_ARRAY_TRIE.clear();
-        for (String word : MUTIL_PINYIN_TABLE.keySet()) {
+        for (String word : MULTI_PINYIN_TABLE.keySet()) {
             dict.add(word);
         }
         Collections.sort(dict);

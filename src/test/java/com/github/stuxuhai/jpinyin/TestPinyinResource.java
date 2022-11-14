@@ -8,7 +8,7 @@ public class TestPinyinResource {
     @Test
     public void testPinyinResource() {
         Assert.assertTrue(PinyinResource.getChineseResource().size() > 0);
-        Assert.assertTrue(PinyinResource.getMutilPinyinResource().size() > 0);
+        Assert.assertTrue(PinyinResource.getMultiPinyinResource().size() > 0);
         Assert.assertTrue(PinyinResource.getPinyinResource().size() > 0);
     }
 }
