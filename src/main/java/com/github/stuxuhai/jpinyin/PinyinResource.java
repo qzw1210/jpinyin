@@ -59,8 +59,8 @@ public final class PinyinResource {
         return getResource(newClassPathReader("/data/pinyin.dict"));
     }
 
-    protected static Map<String, String> getMutilPinyinResource() {
-        return getResource(newClassPathReader("/data/mutil_pinyin.dict"));
+    protected static Map<String, String> getMultiPinyinResource() {
+        return getResource(newClassPathReader("/data/multi_pinyin.dict"));
     }
 
     protected static Map<String, String> getChineseResource() {
